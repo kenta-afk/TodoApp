@@ -13,6 +13,7 @@ let isShowModal = ref(false);
 
 
 
+
 function onEdit(id) {
     inputContent.value = items.value[id].content;
     inputLimit.value = items.value[id].limit;
@@ -44,6 +45,12 @@ function onUpdate(id) {
 function showDeleteModal() {
     isShowModal.value = true;
 }
+
+function dropDeleteModal() {
+    isShowModal.value = false;
+}
+
+
 </script>
 
 <template>
@@ -93,7 +100,7 @@ function showDeleteModal() {
         <div class="modal-content">
             <p>削除してもよろしいですか？</p>
             <button>はい</button>
-            <button>キャンセル</button>
+            <button @click="dropDeleteModal">キャンセル</button>
         </div>
     </div>
 </template>
