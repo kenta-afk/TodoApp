@@ -9,6 +9,8 @@ let inputState = ref();
 
 let isErrMsg = ref(false);
 
+let isShowModal = ref(false);
+
 
 
 function onEdit(id) {
@@ -38,6 +40,10 @@ function onUpdate(id) {
 
     isErrMsg.value = false;
 }   
+
+function showDeleteModal() {
+    isShowModal.value = true;
+}
 </script>
 
 <template>
@@ -79,8 +85,15 @@ function onUpdate(id) {
                     <button v-if="!item.onEdit" @click="onEdit(item.id)">編集</button>
                     <button v-else @click="onUpdate(item.id)">完了</button>
                 </td>
-                <td><button>削除</button></td>
+                <td><button @click="showDeleteModal()">削除</button></td>
             </tr>
         </table>
+    </div>
+    <div v-if="isShowModal" class="modal">
+        <div class="modal-content">
+            <p>削除してもよろしいですか？</p>
+            <button>はい</button>
+            <button>キャンセル</button>
+        </div>
     </div>
 </template>
