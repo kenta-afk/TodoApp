@@ -10,7 +10,7 @@ let inputState = ref();
 let isErrMsg = ref(false);
 
 let isShowModal = ref(false);
-
+let deleteItemId = '';
 
 
 
@@ -42,8 +42,24 @@ function onUpdate(id) {
     isErrMsg.value = false;
 }   
 
-function showDeleteModal() {
+function showDeleteModal(id) {
     isShowModal.value = true;
+    deleteItemId = id
+}
+
+function onDeleteItem() {
+    items.value.splice(deleteItemId, 1);
+    isShowModal.value = false;
+
+    items.value = items.value.map((item, index) => ({
+        id: index,
+        content: item.content,
+        limit: item.limit,
+        state: item.state,
+        onEdit: item.onEdit,
+    }));
+
+    localStorage.setItem("items", JSON.stringify(items.value));
 }
 
 function dropDeleteModal() {
@@ -92,14 +108,14 @@ function dropDeleteModal() {
                     <button v-if="!item.onEdit" @click="onEdit(item.id)">編集</button>
                     <button v-else @click="onUpdate(item.id)">完了</button>
                 </td>
-                <td><button @click="showDeleteModal()">削除</button></td>
+                <td><button @click="showDeleteModal(item.id)">削除</button></td>
             </tr>
         </table>
     </div>
     <div v-if="isShowModal" class="modal">
         <div class="modal-content">
             <p>削除してもよろしいですか？</p>
-            <button>はい</button>
+            <button @click="onDeleteItem">はい</button>
             <button @click="dropDeleteModal">キャンセル</button>
         </div>
     </div>
